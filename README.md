@@ -32,6 +32,6 @@ Streaking comes later, after blur looks right.
 
 ## License
 
-Copyright 2026 Greggory Kinch.
+Required Notice: Copyright 2026 Greggory Kinch (https://github.com/Greggster990/keratoconus-simulator)
 
 Licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0). You may use, change, and share this for noncommercial purposes. Commercial use is not allowed. See [LICENSE](LICENSE) for the full terms.
