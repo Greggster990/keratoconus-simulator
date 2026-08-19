@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Upload a photo and see stacked ghost images like keratoconus vision. Runs in your browser — the photo never leaves this device."
+    />
+    <title>Keratoconus Vision Simulator</title>
+  </head>
+  <body>
+    <div id="app">
+      <main class="stage" id="stage">
+        <canvas id="view" aria-label="Simulated view"></canvas>
+        <div class="empty" id="empty">
+          <p class="empty-title">Drop a photo here</p>
+          <p class="empty-copy">
+            High-contrast pictures work best — text, a face, a street sign.
+          </p>
+          <button type="button" class="btn primary" id="choose">Choose photo</button>
+          <p class="empty-hint">The photo stays on this device. Nothing is uploaded.</p>
+        </div>
+        <div class="gl-error" id="gl-error" hidden>
+          <p>This simulator needs WebGL, which this browser is not providing.</p>
+          <p>Try a current version of Chrome, Firefox, Safari, or Edge.</p>
+        </div>
+      </main>
+
+      <aside class="panel" id="panel">
+        <header class="panel-head">
+          <p class="eyebrow">Keratoconus vision</p>
+          <h1>Simulator</h1>
+          <p class="lede">
+            Ghosts and blur like keratoconus. Not a diagnosis. The photo never
+            leaves this device.
+          </p>
+          <div class="tabs" role="tablist" aria-label="Control mode">
+            <button
+              type="button"
+              class="btn tab"
+              role="tab"
+              id="tab-basic"
+              aria-controls="panel-basic"
+              aria-selected="true"
+            >
+              Basic
+            </button>
+            <button
+              type="button"
+              class="btn tab"
+              role="tab"
+              id="tab-advanced"
+              aria-controls="panel-advanced"
+              aria-selected="false"
+              tabindex="-1"
+            >
+              Advanced
+            </button>
+          </div>
+        </header>
+
+        <div class="panel-scroll">
+          <div
+            class="tab-panel"
+            id="panel-basic"
+            role="tabpanel"
+            aria-labelledby="tab-basic"
+          >
+            <section class="block first" aria-labelledby="preset-label">
+              <h2 id="preset-label">Presets</h2>
+              <div class="preset-row" role="group" aria-labelledby="preset-label">
+                <button type="button" class="btn preset" data-preset="mild">Mild</button>
+                <button type="button" class="btn preset" data-preset="stacked">Stacked</button>
+                <button type="button" class="btn preset" data-preset="everyday">Everyday</button>
+                <button type="button" class="btn preset" data-preset="scattered">Scattered</button>
+                <button type="button" class="btn preset" data-preset="smear">Soft smear</button>
+                <button type="button" class="btn preset" data-preset="severe">Severe</button>
+              </div>
+            </section>
+
+            <section class="block" aria-labelledby="basic-sliders-label">
+              <h2 id="basic-sliders-label">Phase</h2>
+              <div class="sliders">
+                <label class="slider">
+                  <span class="slider-meta">
+                    <span>Ghosting phase</span>
+                    <output id="out-phase" for="phase">Marked</output>
+                  </span>
+                  <input id="phase" type="range" min="0" max="1" step="0.01" value="0.62" />
+                </label>
+              </div>
+            </section>
+          </div>
+
+          <div
+            class="tab-panel"
+            id="panel-advanced"
+            role="tabpanel"
+            aria-labelledby="tab-advanced"
+            hidden
+          >
+            <section class="block first" aria-labelledby="sliders-label">
+              <h2 id="sliders-label">Ghosts</h2>
+              <div class="sliders">
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="mix">Effect amount</label>
+                      <button type="button" class="help-btn" data-help="mix" aria-label="About Effect amount">?</button>
+                    </span>
+                    <output id="out-mix" for="mix">0.99</output>
+                  </span>
+                  <input id="mix" type="range" min="0" max="1" step="0.01" value="0.99" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="count">Ghost copies</label>
+                      <button type="button" class="help-btn" data-help="count" aria-label="About Ghost copies">?</button>
+                    </span>
+                    <output id="out-count" for="count">5</output>
+                  </span>
+                  <input id="count" type="range" min="1" max="10" step="1" value="5" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="sep">Separation</label>
+                      <button type="button" class="help-btn" data-help="sep" aria-label="About Separation">?</button>
+                    </span>
+                    <output id="out-sep" for="sep">2.1%</output>
+                  </span>
+                  <input id="sep" type="range" min="0" max="8" step="0.1" value="2.1" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="angle">Direction</label>
+                      <button type="button" class="help-btn" data-help="angle" aria-label="About Direction">?</button>
+                    </span>
+                    <output id="out-angle" for="angle">265°</output>
+                  </span>
+                  <input id="angle" type="range" min="0" max="360" step="1" value="265" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="fade">Fade</label>
+                      <button type="button" class="help-btn" data-help="fade" aria-label="About Fade">?</button>
+                    </span>
+                    <output id="out-fade" for="fade">0.55</output>
+                  </span>
+                  <input id="fade" type="range" min="0.25" max="0.85" step="0.01" value="0.55" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="soft">Shadow softness</label>
+                      <button type="button" class="help-btn" data-help="soft" aria-label="About Shadow softness">?</button>
+                    </span>
+                    <output id="out-soft" for="soft">1.5</output>
+                  </span>
+                  <input id="soft" type="range" min="0" max="8" step="0.1" value="1.5" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="contrast">High-contrast bias</label>
+                      <button type="button" class="help-btn" data-help="contrast" aria-label="About High-contrast bias">?</button>
+                    </span>
+                    <output id="out-contrast" for="contrast">0.80</output>
+                  </span>
+                  <input id="contrast" type="range" min="0" max="1" step="0.01" value="0.80" />
+                </div>
+              </div>
+            </section>
+
+            <section class="block" aria-labelledby="shape-label">
+              <div class="section-head">
+                <h2 id="shape-label">Shape</h2>
+                <button type="button" class="help-btn" data-help="shape" aria-label="About Shape">?</button>
+              </div>
+              <div class="switch" role="group" aria-label="Ghost path">
+                <button type="button" class="btn switch-opt" data-shape="linear" aria-pressed="true">
+                  Linear
+                </button>
+                <button type="button" class="btn switch-opt" data-shape="scattershot" aria-pressed="false">
+                  Scattershot
+                </button>
+              </div>
+              <div class="sliders">
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="curve">Curve</label>
+                      <button type="button" class="help-btn" data-help="curve" aria-label="About Curve">?</button>
+                    </span>
+                    <output id="out-curve" for="curve">0.50</output>
+                  </span>
+                  <input id="curve" type="range" min="-2" max="2" step="0.05" value="0.50" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="scatter">Scatter</label>
+                      <button type="button" class="help-btn" data-help="scatter" aria-label="About Scatter">?</button>
+                    </span>
+                    <output id="out-scatter" for="scatter">0.35</output>
+                  </span>
+                  <input id="scatter" type="range" min="0" max="2" step="0.05" value="0.35" />
+                </div>
+              </div>
+            </section>
+
+            <section class="block" aria-labelledby="blur-label">
+              <h2 id="blur-label">Blur</h2>
+              <div class="sliders">
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="overall-blur">Overall blur</label>
+                      <button type="button" class="help-btn" data-help="overall" aria-label="About Overall blur">?</button>
+                    </span>
+                    <output id="out-overall-blur" for="overall-blur">1.8</output>
+                  </span>
+                  <input id="overall-blur" type="range" min="0" max="12" step="0.1" value="1.8" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="edge-blur">Edge blur</label>
+                      <button type="button" class="help-btn" data-help="edge" aria-label="About Edge blur">?</button>
+                    </span>
+                    <output id="out-edge-blur" for="edge-blur">1.7</output>
+                  </span>
+                  <input id="edge-blur" type="range" min="0" max="12" step="0.1" value="1.7" />
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel-foot actions" aria-label="Compare and share">
+            <button type="button" class="btn hold" id="hold-original">
+              Hold to see original
+            </button>
+            <label class="check">
+              <input type="checkbox" id="toggle-original" />
+              Show original
+            </label>
+            <div class="action-row">
+              <button type="button" class="btn" id="replace">Replace photo</button>
+              <button type="button" class="btn" id="export" disabled>Download image</button>
+              <button type="button" class="btn" id="copy-link">Copy slider link</button>
+            </div>
+            <p class="status" id="status" role="status"></p>
+            <p class="disclaimer">
+              Illustrative only. Keratoconus varies by person, by eye, and by light.
+            </p>
+          </section>
+        </div>
+      </aside>
+    </div>
+    <input id="file" type="file" accept="image/*" hidden />
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
