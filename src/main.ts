@@ -23,6 +23,9 @@ import {
 } from './ui'
 import type { SliderEls } from './ui'
 
+const ABOUT_COOKIE = 'kc-about-read'
+const ABOUT_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
+
 const canvas = mustEl('#view', HTMLCanvasElement)
 const stage = mustEl('#stage', HTMLElement)
 const empty = mustEl('#empty', HTMLElement)
@@ -93,6 +96,7 @@ tabBasic.addEventListener('click', () => setTab('basic'))
 tabAdvanced.addEventListener('click', () => setTab('advanced'))
 setTab(startAdvanced ? 'advanced' : 'basic')
 bindHelp()
+bindAboutModal()
 
 for (const input of Object.values(sliders)) {
   input.addEventListener('input', onSliderInput)
@@ -305,6 +309,41 @@ function syncQuery(next: GhostParams): void {
     query.set('tab', 'advanced')
   }
   window.history.replaceState(null, '', `${window.location.pathname}?${query.toString()}`)
+}
+
+function bindAboutModal(): void {
+  const dialog = mustEl('#about-modal', HTMLDialogElement)
+  const openBtn = mustEl('#about-open', HTMLButtonElement)
+  const closeBtn = mustEl('#about-close', HTMLButtonElement)
+
+  const closeAndRemember = (): void => {
+    document.cookie = `${ABOUT_COOKIE}=1; Max-Age=${ABOUT_COOKIE_MAX_AGE}; Path=/; SameSite=Lax`
+    if (dialog.open) {
+      dialog.close()
+    }
+  }
+
+  openBtn.addEventListener('click', () => {
+    if (!dialog.open) {
+      dialog.showModal()
+    }
+  })
+  closeBtn.addEventListener('click', () => {
+    closeAndRemember()
+  })
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) {
+      closeAndRemember()
+    }
+  })
+  dialog.addEventListener('cancel', () => {
+    document.cookie = `${ABOUT_COOKIE}=1; Max-Age=${ABOUT_COOKIE_MAX_AGE}; Path=/; SameSite=Lax`
+  })
+
+  const alreadyRead = document.cookie.split(';').some((part) => part.trim().startsWith(`${ABOUT_COOKIE}=`))
+  if (!alreadyRead && !dialog.open) {
+    dialog.showModal()
+  }
 }
 
 function isFileDrag(event: DragEvent): boolean {
