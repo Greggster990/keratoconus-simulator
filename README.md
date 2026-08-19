@@ -4,7 +4,7 @@ Made by **Greggory Kinch**.
 
 Upload a photo in the browser and add stacked ghost copies, then optional blur — the everyday look of keratoconus. Sliders update in real time. The photo never leaves the device.
 
-This is not a medical device and not a diagnosis. Keratoconus looks different for every person and every eye.
+This is not a medical device and not a diagnosis. Keratoconus looks different for every person and every eye. Medical statements on the site are cited in Vancouver (NLM) style; see [CITATIONS.md](CITATIONS.md).
 
 ## Live site
 
