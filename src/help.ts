@@ -16,12 +16,12 @@ export const HELP: Record<string, HelpTopic> = {
     cites: [2],
   },
   sep: {
-    how: 'Sets the spacing scale as a percentage of the image’s shorter side. Larger values spread copies farther apart. In Ring mode, the radius is twice this distance and the original sits on the circle.',
+    how: 'Sets the spacing scale as a percentage of the image’s shorter side. Larger values spread copies farther apart. In Ring mode, this sets the base size; Curve adjusts its length and Scatter adjusts its width.',
     fact: 'Uneven corneal shape contributes to optical aberrations. This spacing control is not calibrated to cone steepness or a clinical measurement.',
     cites: [6],
   },
   angle: {
-    how: 'Sets the direction of the Linear path, the far end of the Ring, and the streak. In Scattershot mode, it rearranges the cloud rather than rotating it as a fixed pattern.',
+    how: 'Sets the direction of the Linear path and the streak. In Ring, it points from the main object to the shared faint ghost at the opposite end; Curve and Scatter keep this direction fixed. In Scattershot mode, it rearranges the cloud rather than rotating it as a fixed pattern.',
     fact: 'Vertical coma is often prominent in keratoconus. This slider does not locate the cone or determine its orientation.',
     cites: [6],
   },
@@ -41,17 +41,17 @@ export const HELP: Record<string, HelpTopic> = {
     cites: [2],
   },
   shape: {
-    how: 'Linear places copies along a path. Scattershot spreads them in a cloud. Ring follows both sides of a circle, fading toward a shared ghost opposite the main object; bright areas contribute more.',
+    how: 'Linear places copies along a path. Scattershot spreads them in a cloud. Ring follows both sides of an adjustable oval, fading toward a shared ghost opposite the main object; bright areas contribute more.',
     fact: 'Coma is often the largest higher-order aberration in keratoconus. These three patterns are illustrative options, not clinically validated categories.',
     cites: [6],
   },
   curve: {
-    how: 'Bends the Linear path to either side. At zero, the path is straight unless Scatter adds wobble. Has no effect in Scattershot and is disabled for Ring.',
+    how: 'Bends the Linear path to either side. At zero, the path is straight unless Scatter adds wobble. Has no effect in Scattershot. In Ring, lower values shorten the distance to the opposite point and higher values lengthen it, along Direction.',
     fact: 'Corneal irregularity changes the eye’s optics, but this curved chain of copies is an artistic approximation rather than a measured consequence of corneal curvature.',
     cites: [7],
   },
   scatter: {
-    how: 'Adds positional wobble in Linear and widens the cloud in Scattershot. Disabled for Ring to keep its two sides symmetric.',
+    how: 'Adds positional wobble in Linear and widens the cloud in Scattershot. In Ring, lower values narrow the oval and higher values widen it, without moving its opposite point. Curve 0 and Scatter 1 give a circle.',
     fact: 'Keratoconus can involve several optical aberrations. Randomly placed copies here are a visual approximation, not a simulation of physical light scattering.',
     cites: [7],
   },

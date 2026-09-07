@@ -7,6 +7,8 @@ export type SamplePhoto = {
   source: string
   license: string
   licenseUrl: string
+  frameScale?: number
+  changes?: string
 }
 
 const commons = 'https://commons.wikimedia.org/wiki/File:'
@@ -14,11 +16,11 @@ const cc0 = { license: 'CC0 1.0', licenseUrl: 'https://creativecommons.org/publi
 const ccby = { license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0/' }
 
 export const SAMPLES: SamplePhoto[] = [
-  { id: 'moon', label: 'Moon', hint: 'Bright rim on black', title: 'Apollo 11 image of a nearly full Moon', author: 'NASA / Apollo 11 crew', source: commons + 'Apollo_11_image_of_a_nearly_full_Moon.jpg', license: 'Public domain (NASA)', licenseUrl: 'https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA' },
+  { id: 'moon', label: 'Moon', hint: 'Small Moon, dark sky', frameScale: 0.1, changes: 'Scaled down onto a black background; resized and JPEG-compressed', title: 'Apollo 11 image of a nearly full Moon', author: 'NASA / Apollo 11 crew', source: commons + 'Apollo_11_image_of_a_nearly_full_Moon.jpg', license: 'Public domain (NASA)', licenseUrl: 'https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA' },
   { id: 'city', label: 'City lights', hint: 'Night lights and windows', title: 'City at Night (32760281221)', author: "It’s No Game", source: commons + 'City_at_Night_(32760281221).jpg', ...ccby },
-  { id: 'traffic', label: 'Traffic lights', hint: 'Colored lights and edges', title: 'Traffic light red and yellow Drammen (2)', author: 'Peulle / Petter Ulleland', source: commons + 'Traffic_light_red_and_yellow_Drammen_(2).jpg', ...cc0 },
+  { id: 'traffic', label: 'Traffic lights', hint: 'Nighttime crosswalk', title: 'Traffic at a Chicago intersection at night', author: 'Topher', source: 'https://wordpress.org/photos/photo/15768f23bc/', ...cc0 },
   { id: 'sign', label: 'Street sign', hint: 'White lettering', title: 'Luverne, MN Main Street sign', author: 'Michel Curi', source: commons + 'Luverne,_MN_Main_Street_sign.jpg', ...ccby },
-  { id: 'clock', label: 'Clock face', hint: 'Numbers and fine lines', title: 'Timex Quartz 02h36m06s', author: 'Sonja Langford', source: commons + 'Timex_Quartz_02h36m06s.jpg', ...cc0 },
+  { id: 'clock', label: 'Clock face', hint: 'Complete face and hands', title: 'Traditional round wall clock', author: 'davlopez', source: 'https://wordpress.org/photos/photo/5476a83db2/', ...cc0 },
   { id: 'chess', label: 'Chessboard', hint: 'Contrasting pieces', title: 'Image Chess', author: 'Devcore', source: commons + 'Image_Chess.jpg', ...cc0 },
 ]
 
@@ -29,7 +31,32 @@ export function sampleUrl(sample: SamplePhoto, thumbnail = false): string {
 export async function sampleFile(sample: SamplePhoto): Promise<File> {
   const response = await fetch(sampleUrl(sample))
   if (!response.ok) throw new Error('Could not load this sample. Please try again.')
-  return new File([await response.blob()], `${sample.label}.jpg`, { type: 'image/jpeg' })
+  const blob = await response.blob()
+  if (!sample.frameScale) {
+    return new File([blob], `${sample.label}.jpg`, { type: 'image/jpeg' })
+  }
+  // Keep the whole photograph, with ample room around it for displaced ghosts.
+  // At 0.1, even the source frame is at most 10% of either display dimension.
+  const image = await createImageBitmap(blob)
+  try {
+    const canvas = document.createElement('canvas')
+    canvas.width = 1600
+    canvas.height = 1000
+    const ctx = canvas.getContext('2d')
+    if (!ctx) throw new Error('Could not prepare this sample.')
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    const scale = Math.min(canvas.width, canvas.height) * sample.frameScale / Math.max(image.width, image.height)
+    const width = image.width * scale
+    const height = image.height * scale
+    ctx.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height)
+    const framed = await new Promise<Blob>((resolve, reject) => canvas.toBlob(
+      (result) => result ? resolve(result) : reject(new Error('Could not prepare this sample.')), 'image/png',
+    ))
+    return new File([framed], `${sample.label}.png`, { type: 'image/png' })
+  } finally {
+    image.close()
+  }
 }
 
 export function bindSamplePicker(select: (sample: SamplePhoto) => void): void {
@@ -75,7 +102,7 @@ export function showSampleCredit(sample: SamplePhoto | null): void {
     link.rel = 'noopener noreferrer'
   }
   credit.append('Sample photo: ', source, ` — ${sample.author}. `, license,
-    '. Resized and JPEG-compressed; simulation effects may be applied. Photo license is separate from the site license. Credit is included in sample downloads.')
+    `. ${sample.changes ?? 'Resized and JPEG-compressed'}; simulation effects may be applied. Photo license is separate from the site license. Credit is included in sample downloads.`)
 }
 
 // Keep attribution attached when a visitor exports a modified sample photo.
@@ -93,7 +120,7 @@ export async function creditSampleExport(blob: Blob, sample: SamplePhoto): Promi
       `${sample.title} — ${sample.author}`,
       `${sample.license} — ${sample.licenseUrl}`,
       sample.source,
-      'Resized and JPEG-compressed; simulator effects may be applied.',
+      `${sample.changes ?? 'Resized and JPEG-compressed'}; simulator effects may be applied.`,
     ]) {
       let line = ''
       for (const char of paragraph) {

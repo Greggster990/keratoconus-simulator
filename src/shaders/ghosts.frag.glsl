@@ -129,17 +129,21 @@ vec3 ringGhosts(vec4 original) {
   vec2 dir = vec2(cos(uAngle), sin(uAngle));
   vec2 perp = vec2(-dir.y, dir.x);
   float radius = uSeparationPx * 2.0;
+  // Direction always runs from the original to the shared opposite point.
+  // Curve scales that axis; Scatter scales the width without shifting the tip.
+  float lengthRadius = radius * exp2(clamp(uCurve, -2.0, 2.0) * 0.5);
+  float widthRadius = radius * (0.5 + 0.5 * clamp(uScatter, 0.0, 2.0));
   float steps = float(uGhostCount + 1);
   vec3 light = vec3(0.0);
   float weightSum = 0.0;
-  // Count pairs along both semicircles, then sample their shared end once.
+  // Count pairs along both half-ellipses, then sample their shared end once.
   const int MAX_RING_STEPS = 11;
   for (int i = 1; i <= MAX_RING_STEPS; i++) {
     if (i > uGhostCount + 1) break;
     float progress = float(i) / steps;
     float theta = 3.14159265 * progress;
-    vec2 along = dir * radius * (1.0 - cos(theta));
-    vec2 across = perp * radius * sin(theta);
+    vec2 along = dir * lengthRadius * (1.0 - cos(theta));
+    vec2 across = perp * widthRadius * sin(theta);
     float w = pow(uFade, 1.0 + 3.0 * progress)
       * mix(1.0, 0.12, progress * progress);
     float softness = uSoftness * (1.0 + 2.0 * progress);

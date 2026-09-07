@@ -23,3 +23,5 @@ Reviewed 2026-09-07. Scope: all 15 help tooltips, including both control instruc
 Reference 6 had the correct article title and DOI but an incorrect PMID. Changed 17561224 (an unrelated snake-venom paper) to 17553566 in both bibliography copies and the page. Added a full-text link for reference 7. Renamed “Fun fact” to “Context” so model explanations are not presented as clinical facts.
 
 The sources support general optical context, not the simulator’s exact ghost geometry or numerical settings. The tooltip corrections do not change rendering behavior. Other explanatory page text and references unused by tooltips were outside this review.
+
+Subsequent control update: Ring now uses Curve for its length and Scatter for its width. Direction remains the axis from the original to the shared opposite ghost. These are simulator geometry controls; the clinical context is unchanged.

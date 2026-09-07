@@ -94,8 +94,12 @@ export function syncShapeSwitch(mode: ShapeMode): void {
   if (countLabel) countLabel.textContent = countText
   document.querySelector('[data-help="count"]')?.setAttribute('aria-label', `About ${countText}`)
   for (const id of ['curve', 'scatter']) {
-    const input = document.getElementById(id) as HTMLInputElement | null
-    if (input) input.disabled = mode === 'ring'
+    const name = id === 'curve' ? 'Curve' : 'Scatter'
+    const dimension = id === 'curve' ? 'ring length' : 'ring width'
+    const label = document.querySelector(`label[for="${id}"]`)
+    const text = mode === 'ring' ? `${name} · ${dimension}` : name
+    if (label) label.textContent = text
+    document.querySelector(`[data-help="${id}"]`)?.setAttribute('aria-label', `About ${text}`)
   }
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-shape]')) {
     const shape = button.getAttribute('data-shape')

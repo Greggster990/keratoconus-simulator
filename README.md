@@ -25,7 +25,7 @@ Then open the local URL Vite prints.
 
 ## Current slices
 
-1. **Ghosts** — count, separation, direction, fade, softness, high-contrast bias, curve, scatter, Linear, Scattershot, or Ring. Ring places paired copies along both sides of a circle, strongest near the original and fading to a shared faint copy opposite it. Bright areas contribute more strongly. Separation sets ring size, Direction rotates it, and Ghost pairs sets density.
+1. **Ghosts** — count, separation, direction, fade, softness, high-contrast bias, curve, scatter, Linear, Scattershot, or Ring. Ring places paired copies along both sides of an adjustable oval, strongest near the original and fading to a shared faint copy opposite it. Bright areas contribute more strongly. Separation sets the base ring size, Direction points to the shared opposite ghost, Curve adjusts the length, Scatter adjusts the width, and Ghost pairs sets density. Curve 0 and Scatter 1 produce a circle.
 2. **Blur** — overall softness plus extra smear on edges.
 
 3. **Streaks** — adjustable length, strength, and an optional weaker opposite tail.

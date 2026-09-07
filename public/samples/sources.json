@@ -8,7 +8,7 @@
     "license": "Public domain (NASA)",
     "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA",
     "checkedOn": "2026-09-07",
-    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "changes": "Source JPEG resized and compressed; displayed at no more than 10% of the shorter frame dimension, centered on a black background; optional simulator effects.",
     "sha256": "c1f9bb384826c2a8c0567889ce5b728bb3c4b8b14ad5cc3e4e76292de334a341"
   },
   {
@@ -25,15 +25,15 @@
   },
   {
     "id": "traffic",
-    "title": "Traffic_light_red_and_yellow_Drammen_(2).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Traffic_light_red_and_yellow_Drammen_%282%29.jpg",
-    "download": "https://upload.wikimedia.org/wikipedia/commons/7/70/Traffic_light_red_and_yellow_Drammen_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
-    "author": "Peulle / Petter Ulleland",
+    "title": "Traffic at a Chicago intersection at night",
+    "source": "https://wordpress.org/photos/photo/15768f23bc/",
+    "download": "https://pd.w.org/2025/10/15768f23bccb8f0d6.32084508.jpeg",
+    "author": "Topher",
     "license": "CC0 1.0",
     "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
     "checkedOn": "2026-09-07",
     "changes": "Resized and JPEG-compressed; optional simulator effects.",
-    "sha256": "1dfc949aed1af3a813986d948eed85d3aa098cd4fadaea22be5a6da2baff12c2"
+    "sha256": "54ebd75ed7834a9d2cc8bc68cd30da94f8440cf62558b2c800c8f0fab4ea34c3"
   },
   {
     "id": "sign",
@@ -49,15 +49,15 @@
   },
   {
     "id": "clock",
-    "title": "Timex_Quartz_02h36m06s.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Timex_Quartz_02h36m06s.jpg",
-    "download": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Timex_Quartz_02h36m06s.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
-    "author": "Sonja Langford",
+    "title": "Traditional round wall clock",
+    "source": "https://wordpress.org/photos/photo/5476a83db2/",
+    "download": "https://pd.w.org/2026/08/5476a83db2c8f6d23.24029069-rotated.jpeg",
+    "author": "davlopez",
     "license": "CC0 1.0",
     "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
     "checkedOn": "2026-09-07",
     "changes": "Resized and JPEG-compressed; optional simulator effects.",
-    "sha256": "a53f7414605bca04586334e19a8433d82f513d8e95d49f3e3c925bfa3e2ce0a0"
+    "sha256": "5135c537a9d161a2ea29575e4c625619987c7ab1bfffc169a38115fce1a19a9f"
   },
   {
     "id": "chess",

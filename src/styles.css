@@ -596,3 +596,5 @@ input[type='range']::-moz-range-thumb {
 .sample-credit { color: var(--muted); font-size: 0.75rem; overflow-wrap: anywhere; margin: 0.7rem 0; }
 .sample-credit[hidden] { display: none; }
 .sample-credit a { color: var(--accent); }
+
+.sample-photo[data-sample='clock'] img { object-fit: contain; background: var(--bg); }
