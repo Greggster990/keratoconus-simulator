@@ -1,6 +1,8 @@
 import './styles.css'
 import { bindHelp } from './help'
 import { loadImageFile } from './imageLoader'
+import { bindSamplePicker, creditSampleExport, sampleFile, showSampleCredit } from './samples'
+import type { SamplePhoto } from './samples'
 import {
   EVERYDAY,
   PRESETS,
@@ -68,6 +70,8 @@ const startAdvanced = new URLSearchParams(window.location.search).get('tab') ===
 let params: GhostParams = cloneParams(fromQuery ?? EVERYDAY)
 let holdOriginal = false
 let statusTimer = 0
+let activeSample: SamplePhoto | null = null
+let imageRequest = 0
 
 const tabBasic = mustEl('#tab-basic', HTMLButtonElement)
 const tabAdvanced = mustEl('#tab-advanced', HTMLButtonElement)
@@ -100,6 +104,9 @@ tabAdvanced.addEventListener('click', () => setTab('advanced'))
 setTab(startAdvanced ? 'advanced' : 'basic')
 bindHelp()
 bindAboutModal()
+bindSamplePicker((sample) => {
+  void openImage(sampleFile(sample), sample)
+})
 
 for (const input of Object.values(sliders)) {
   input.addEventListener('input', onSliderInput)
@@ -222,7 +229,7 @@ toggleOriginal.addEventListener('change', () => {
 })
 
 window.addEventListener('keydown', (event) => {
-  if (event.code !== 'Space' || event.repeat || isTextInput(event.target)) {
+  if (event.code !== 'Space' || event.repeat || isTextInput(event.target) || (event.target instanceof Element && !!event.target.closest('button, a, summary'))) {
     return
   }
   event.preventDefault()
@@ -245,7 +252,9 @@ mustEl('#copy-link', HTMLButtonElement).addEventListener('click', () => {
 exportBtn.addEventListener('click', () => {
   void (async () => {
     try {
-      const blob = await renderer.exportPngBlob()
+      const sample = activeSample
+      const rendered = await renderer.exportPngBlob()
+      const blob = sample ? await creditSampleExport(rendered, sample) : rendered
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -265,17 +274,27 @@ resizeObserver.observe(stage)
 renderer.resize()
 
 async function openFile(file: File): Promise<void> {
+  return openImage(Promise.resolve(file), null)
+}
+
+async function openImage(file: Promise<File>, sample: SamplePhoto | null): Promise<void> {
+  const request = ++imageRequest
   try {
-    const image = await loadImageFile(file)
+    const image = await loadImageFile(await file)
+    if (request !== imageRequest) return
     renderer.setImage(image.canvas, image.width, image.height, image.border)
     if (!renderer.ok || !renderer.hasImage()) {
       flashStatus('The photo loaded, but WebGL is not available to display it.', 'error')
       return
     }
+    activeSample = sample
+    showSampleCredit(sample)
+    mustEl('#sample-picker', HTMLDetailsElement).open = false
     empty.hidden = true
     exportBtn.disabled = false
     flashStatus(`Showing ${image.name}`)
   } catch (err) {
+    if (request !== imageRequest) return
     const message = err instanceof Error ? err.message : 'Could not open that file.'
     flashStatus(message, 'error')
   }

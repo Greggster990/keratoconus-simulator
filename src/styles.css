@@ -583,3 +583,16 @@ input[type='range']::-moz-range-thumb {
     font-size: 1.4rem;
   }
 }
+
+.sample-picker { margin: 0 0 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+.sample-picker summary { cursor: pointer; font-weight: 600; }
+.sample-intro { color: var(--muted); font-size: 0.82rem; margin: 0.6rem 0; }
+.sample-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.45rem; }
+.sample-photo { min-width: 0; padding: 0.3rem; text-align: left; }
+.sample-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1.6; object-fit: cover; border-radius: 3px; }
+.sample-photo span { display: block; font-size: 0.78rem; margin-top: 0.3rem; }
+.sample-photo small { display: block; font-size: 0.65rem; font-weight: normal; color: var(--muted); }
+.sample-photo[aria-pressed='true'] { border-color: var(--accent); }
+.sample-credit { color: var(--muted); font-size: 0.75rem; overflow-wrap: anywhere; margin: 0.7rem 0; }
+.sample-credit[hidden] { display: none; }
+.sample-credit a { color: var(--accent); }

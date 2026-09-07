@@ -28,7 +28,13 @@ Then open the local URL Vite prints.
 1. **Ghosts** — count, separation, direction, fade, softness, high-contrast bias, curve, scatter, Linear, Scattershot, or Ring. Ring places paired copies along both sides of a circle, strongest near the original and fading to a shared faint copy opposite it. Bright areas contribute more strongly. Separation sets ring size, Direction rotates it, and Ghost pairs sets density.
 2. **Blur** — overall softness plus extra smear on edges.
 
-Streaking comes later, after blur looks right.
+3. **Streaks** — adjustable length, strength, and an optional weaker opposite tail.
+
+## Sample photos
+
+Use **Try a sample photo** in either control mode to load the Moon, city lights, traffic lights, a street sign, a clock face, or a chessboard. Samples preserve the current sliders. Credits appear at the bottom when selected and are included in downloaded sample images. Uploading a personal photo clears the sample credit.
+
+Photos are bundled locally and have their own public-domain, CC0, or CC BY 2.0 terms; see [sample attribution and source links](public/samples/ATTRIBUTION.md). The application license does not override the photo licenses.
 
 ## License
 

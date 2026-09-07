@@ -1,0 +1,74 @@
+[
+  {
+    "id": "moon",
+    "title": "Apollo_11_image_of_a_nearly_full_Moon.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Apollo_11_image_of_a_nearly_full_Moon.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Apollo_11_image_of_a_nearly_full_Moon.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "NASA / Apollo 11 crew",
+    "license": "Public domain (NASA)",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "c1f9bb384826c2a8c0567889ce5b728bb3c4b8b14ad5cc3e4e76292de334a341"
+  },
+  {
+    "id": "city",
+    "title": "City_at_Night_(32760281221).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:City_at_Night_%2832760281221%29.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/e/e2/City_at_Night_%2832760281221%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "It’s No Game",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "680689308338953c93e5e4282c9ec5444a2881d549a7eb382be79cc0be3b158c"
+  },
+  {
+    "id": "traffic",
+    "title": "Traffic_light_red_and_yellow_Drammen_(2).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Traffic_light_red_and_yellow_Drammen_%282%29.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/7/70/Traffic_light_red_and_yellow_Drammen_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "Peulle / Petter Ulleland",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "1dfc949aed1af3a813986d948eed85d3aa098cd4fadaea22be5a6da2baff12c2"
+  },
+  {
+    "id": "sign",
+    "title": "Luverne,_MN_Main_Street_sign.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Luverne%2C_MN_Main_Street_sign.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/d/de/Luverne%2C_MN_Main_Street_sign.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "Michel Curi",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "a52e50e0791dfa2138251ebdac2395d3366f76680ff07610bad22ba5b7f8978d"
+  },
+  {
+    "id": "clock",
+    "title": "Timex_Quartz_02h36m06s.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Timex_Quartz_02h36m06s.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Timex_Quartz_02h36m06s.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "Sonja Langford",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "a53f7414605bca04586334e19a8433d82f513d8e95d49f3e3c925bfa3e2ce0a0"
+  },
+  {
+    "id": "chess",
+    "title": "Image_Chess.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Image_Chess.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Image_Chess.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "author": "Devcore",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checkedOn": "2026-09-07",
+    "changes": "Resized and JPEG-compressed; optional simulator effects.",
+    "sha256": "7989b276d93adb33bf0872fd8370bb76681aeae5175c1ad76e04d9e92960c947"
+  }
+]

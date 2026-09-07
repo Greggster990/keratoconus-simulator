@@ -21,10 +21,10 @@ This simulator is an illustration of possible visual effects. It is not a diagno
 5. Gomes JAP, Rodrigues PF, Lamazales LL. Keratoconus epidemiology: a review. *Saudi J Ophthalmol*. 2022;36(1):3-6. doi:[10.4103/sjopt.sjopt_204_21](https://doi.org/10.4103/sjopt.sjopt_204_21). PMID: [35971497](https://pubmed.ncbi.nlm.nih.gov/35971497/).
    - Used for: prevalence varies by region and can reach as high as about 5% in some Middle Eastern populations; both sexes and multiple ethnic groups are affected.
 
-6. Pantanelli S, MacRae S, Jeong TM, Yoon G. Characterizing the wave aberration in eyes with keratoconus or penetrating keratoplasty using a high-dynamic range wavefront sensor. *Ophthalmology*. 2007;114(11):2013-2021. doi:[10.1016/j.ophtha.2007.01.008](https://doi.org/10.1016/j.ophtha.2007.01.008). PMID: [17561224](https://pubmed.ncbi.nlm.nih.gov/17561224/).
+6. Pantanelli S, MacRae S, Jeong TM, Yoon G. Characterizing the wave aberration in eyes with keratoconus or penetrating keratoplasty using a high-dynamic range wavefront sensor. *Ophthalmology*. 2007;114(11):2013-2021. doi:[10.1016/j.ophtha.2007.01.008](https://doi.org/10.1016/j.ophtha.2007.01.008). PMID: [17553566](https://pubmed.ncbi.nlm.nih.gov/17553566/).
    - Used for: higher-order aberrations in keratoconus about 5.5 times those typical of normal eyes; optical basis of ghosting and distortion that sphere and cylinder cannot fully correct.
 
-7. Jinabhai A, Radhakrishnan H, O’Donnell C. Higher order aberrations in keratoconus: a review. *Optom Pract*. 2009;10:141-160.
+7. Jinabhai A, Radhakrishnan H, O’Donnell C. Higher order aberrations in keratoconus: a review. *Optom Pract*. 2009;10:141-160. [Full text, University of Manchester](https://pure.manchester.ac.uk/ws/files/157153125/HOAs_in_KC_a_review.pdf).
    - Used for: reduced optical quality from corneal distortion, scarring, and higher-order aberrations; visual symptoms including ghosting, reduced contrast, and glare.
 
 8. Wollensak G, Spoerl E, Seiler T. Riboflavin/ultraviolet-a-induced collagen crosslinking for the treatment of keratoconus. *Am J Ophthalmol*. 2003;135(5):620-627. doi:[10.1016/S0002-9394(02)02220-1](https://doi.org/10.1016/S0002-9394(02)02220-1). PMID: [12719068](https://pubmed.ncbi.nlm.nih.gov/12719068/).
@@ -40,5 +40,5 @@ Prevalence is reported as a **range**, not a single world figure. Older studies 
 ## What this simulator does *not* claim
 
 - It does not diagnose keratoconus or grade severity.
-- Ghost, scatter, and blur sliders are phenomenological: they are inspired by coma-dominated higher-order aberration and irregular astigmatism,⁶,⁷ not a patient-specific wavefront.
+- Ghost, ring, scatter, blur, and streak controls are illustrative image effects, not patient-specific wavefront simulations. Sources 2, 6, and 7 support the general clinical and optical context; they do not validate the chosen paths, spacing, fade, brightness masks, or opposite tail. Slider values do not measure disease severity or cone position.
 - Individual eyes differ. Bilateral disease is often asymmetric.²
