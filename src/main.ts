@@ -46,6 +46,9 @@ const sliders: SliderEls = {
   scatter: mustEl('#scatter', HTMLInputElement),
   overallBlur: mustEl('#overall-blur', HTMLInputElement),
   edgeBlur: mustEl('#edge-blur', HTMLInputElement),
+  streakLength: mustEl('#streak-length', HTMLInputElement),
+  streakAmount: mustEl('#streak-amount', HTMLInputElement),
+  streakReflect: mustEl('#streak-reflect', HTMLInputElement),
 }
 
 const renderer = new Renderer(canvas)
@@ -101,6 +104,7 @@ bindAboutModal()
 for (const input of Object.values(sliders)) {
   input.addEventListener('input', onSliderInput)
 }
+sliders.streakReflect.addEventListener('change', onSliderInput)
 
 phaseSlider.addEventListener('input', () => {
   const phase = Number(phaseSlider.value)
@@ -116,7 +120,7 @@ phaseSlider.addEventListener('input', () => {
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-shape]')) {
   button.addEventListener('click', () => {
     const mode = button.dataset.shape
-    if (mode !== 'linear' && mode !== 'scattershot') {
+    if (mode !== 'linear' && mode !== 'scattershot' && mode !== 'ring') {
       return
     }
     params = { ...params, shapeMode: mode }

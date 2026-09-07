@@ -5,6 +5,7 @@ import { downlevelToWebGL1 } from './shaderSource'
 import quadVertSrc from './shaders/quad.vert.glsl?raw'
 import ghostsFragSrc from './shaders/ghosts.frag.glsl?raw'
 import blurFragSrc from './shaders/blur.frag.glsl?raw'
+import streakFragSrc from './shaders/streak.frag.glsl?raw'
 import presentFragSrc from './shaders/present.frag.glsl?raw'
 
 type GL = WebGLRenderingContext | WebGL2RenderingContext
@@ -33,10 +34,12 @@ export class Renderer {
   private quad: WebGLBuffer | null = null
   private ghosts: ProgramSet | null = null
   private blur: ProgramSet | null = null
+  private streak: ProgramSet | null = null
   private present: ProgramSet | null = null
   private sourceTexture: WebGLTexture | null = null
   private ghostTarget: Target | null = null
   private blurTarget: Target | null = null
+  private streakTarget: Target | null = null
   private imageWidth = 0
   private imageHeight = 0
   private border: BorderColors = STAGE_BORDER
@@ -87,6 +90,18 @@ export class Renderer {
         'uTexelSize',
         'uOverall',
         'uEdge',
+        'uBorderL',
+        'uBorderR',
+        'uBorderT',
+        'uBorderB',
+      ])
+      this.streak = createProgram(this.gl, this.isWebGL2, quadVertSrc, streakFragSrc, [
+        'uImage',
+        'uTexelSize',
+        'uLengthPx',
+        'uAmount',
+        'uAngle',
+        'uReflect',
         'uBorderL',
         'uBorderR',
         'uBorderT',
@@ -212,6 +227,9 @@ export class Renderer {
     if (this.blurTarget) {
       destroyTarget(gl, this.blurTarget)
     }
+    if (this.streakTarget) {
+      destroyTarget(gl, this.streakTarget)
+    }
     if (this.quad) {
       gl.deleteBuffer(this.quad)
     }
@@ -220,6 +238,9 @@ export class Renderer {
     }
     if (this.blur) {
       gl.deleteProgram(this.blur.program)
+    }
+    if (this.streak) {
+      gl.deleteProgram(this.streak.program)
     }
     if (this.present) {
       gl.deleteProgram(this.present.program)
@@ -239,15 +260,20 @@ export class Renderer {
       destroyTarget(gl, this.blurTarget)
       this.blurTarget = null
     }
+    if (this.streakTarget) {
+      destroyTarget(gl, this.streakTarget)
+      this.streakTarget = null
+    }
     if (this.imageWidth > 0 && this.imageHeight > 0) {
       this.ghostTarget = createTarget(gl, this.imageWidth, this.imageHeight)
       this.blurTarget = createTarget(gl, this.imageWidth, this.imageHeight)
+      this.streakTarget = createTarget(gl, this.imageWidth, this.imageHeight)
     }
   }
 
   private draw(): void {
     const gl = this.gl
-    if (!gl || !this.ok || !this.ghosts || !this.blur || !this.present || !this.quad) {
+    if (!gl || !this.ok || !this.ghosts || !this.blur || !this.streak || !this.present || !this.quad) {
       return
     }
 
@@ -255,7 +281,13 @@ export class Renderer {
     gl.enableVertexAttribArray(0)
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0)
 
-    if (!this.sourceTexture || !this.ghostTarget || !this.blurTarget || !this.params) {
+    if (
+      !this.sourceTexture ||
+      !this.ghostTarget ||
+      !this.blurTarget ||
+      !this.streakTarget ||
+      !this.params
+    ) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, null)
       gl.viewport(0, 0, this.canvas.width, this.canvas.height)
       gl.clearColor(CLEAR[0], CLEAR[1], CLEAR[2], CLEAR[3])
@@ -268,10 +300,17 @@ export class Renderer {
       gl.viewport(0, 0, this.ghostTarget.width, this.ghostTarget.height)
       this.drawGhosts()
 
+      let current = this.ghostTarget.texture
       if (this.blurActive()) {
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.blurTarget.framebuffer)
         gl.viewport(0, 0, this.blurTarget.width, this.blurTarget.height)
-        this.drawBlur(this.ghostTarget.texture)
+        this.drawBlur(current)
+        current = this.blurTarget.texture
+      }
+      if (this.streakActive()) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.streakTarget.framebuffer)
+        gl.viewport(0, 0, this.streakTarget.width, this.streakTarget.height)
+        this.drawStreak(current)
       }
     }
 
@@ -313,7 +352,7 @@ export class Renderer {
     gl.uniform1f(ghosts.uniforms.uContrast, params.contrast)
     gl.uniform1f(ghosts.uniforms.uCurve, params.curve)
     gl.uniform1f(ghosts.uniforms.uScatter, params.scatter)
-    gl.uniform1f(ghosts.uniforms.uShapeMode, params.shapeMode === 'scattershot' ? 1 : 0)
+    gl.uniform1f(ghosts.uniforms.uShapeMode, params.shapeMode === 'ring' ? 2 : params.shapeMode === 'scattershot' ? 1 : 0)
     this.setBorderUniforms(ghosts)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
   }
@@ -336,6 +375,27 @@ export class Renderer {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
   }
 
+  private drawStreak(input: WebGLTexture): void {
+    const gl = this.gl
+    const streak = this.streak
+    const params = this.params
+    if (!gl || !streak || !params) {
+      return
+    }
+    gl.useProgram(streak.program)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, input)
+    gl.uniform1i(streak.uniforms.uImage, 0)
+    gl.uniform2f(streak.uniforms.uTexelSize, 1 / this.imageWidth, 1 / this.imageHeight)
+    const minSide = Math.min(this.imageWidth, this.imageHeight)
+    gl.uniform1f(streak.uniforms.uLengthPx, (params.streakLength / 100) * minSide)
+    gl.uniform1f(streak.uniforms.uAmount, params.streakAmount)
+    gl.uniform1f(streak.uniforms.uAngle, (params.angle * Math.PI) / 180)
+    gl.uniform1f(streak.uniforms.uReflect, params.streakReflect ? 1 : 0)
+    this.setBorderUniforms(streak)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+  }
+
   private setBorderUniforms(program: ProgramSet): void {
     const gl = this.gl
     if (!gl) {
@@ -355,9 +415,19 @@ export class Renderer {
     return this.params.overallBlur > 0.04 || this.params.edgeBlur > 0.04
   }
 
+  private streakActive(): boolean {
+    if (!this.params) {
+      return false
+    }
+    return this.params.streakLength > 0.04 && this.params.streakAmount > 0.01
+  }
+
   private outputTexture(): WebGLTexture | null {
     if (this.bypass || !this.params) {
       return this.sourceTexture
+    }
+    if (this.streakActive()) {
+      return this.streakTarget?.texture ?? this.blurTarget?.texture ?? this.ghostTarget?.texture ?? this.sourceTexture
     }
     if (this.blurActive()) {
       return this.blurTarget?.texture ?? this.ghostTarget?.texture ?? this.sourceTexture

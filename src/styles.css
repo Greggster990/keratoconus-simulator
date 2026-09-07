@@ -270,6 +270,7 @@ body {
 }
 
 .switch {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: 0.85rem;
 }
 

@@ -116,8 +116,50 @@ vec2 ghostOffsetPx(float t) {
   return mix(linear, spray, clamp(uShapeMode, 0.0, 1.0));
 }
 
+// Add displaced light without painting dark copies over the main object.
+// The source luminance makes highlights contribute more than dim surfaces.
+vec3 ringLight(vec2 uv, vec4 original, float softness) {
+  vec4 ghost = softSample(uv, softness);
+  float highlight = mix(0.15, 1.0, smoothstep(0.02, 0.7, luma(ghost.rgb)));
+  float vis = ghostVisibility(ghost, original, uv);
+  return max(ghost.rgb - original.rgb, vec3(0.0)) * highlight * vis;
+}
+
+vec3 ringGhosts(vec4 original) {
+  vec2 dir = vec2(cos(uAngle), sin(uAngle));
+  vec2 perp = vec2(-dir.y, dir.x);
+  float radius = uSeparationPx * 2.0;
+  float steps = float(uGhostCount + 1);
+  vec3 light = vec3(0.0);
+  float weightSum = 0.0;
+  // Count pairs along both semicircles, then sample their shared end once.
+  const int MAX_RING_STEPS = 11;
+  for (int i = 1; i <= MAX_RING_STEPS; i++) {
+    if (i > uGhostCount + 1) break;
+    float progress = float(i) / steps;
+    float theta = 3.14159265 * progress;
+    vec2 along = dir * radius * (1.0 - cos(theta));
+    vec2 across = perp * radius * sin(theta);
+    float w = pow(uFade, 1.0 + 3.0 * progress)
+      * mix(1.0, 0.12, progress * progress);
+    float softness = uSoftness * (1.0 + 2.0 * progress);
+    if (i == uGhostCount + 1) {
+      light += ringLight(vUv - along * uTexelSize, original, softness) * w;
+    } else {
+      light += ringLight(vUv - (along + across) * uTexelSize, original, softness) * w * 0.5;
+      light += ringLight(vUv - (along - across) * uTexelSize, original, softness) * w * 0.5;
+    }
+    weightSum += w;
+  }
+  return original.rgb + light * clamp(uMix, 0.0, 1.0) / max(1.0, weightSum);
+}
+
 void main() {
   vec4 original = sampleLin(vUv);
+  if (uShapeMode > 1.5) {
+    fragColor = vec4(toSRGB(ringGhosts(original)), 1.0);
+    return;
+  }
 
   float wSum = 1.0;
   vec4 acc = original;

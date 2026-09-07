@@ -34,8 +34,8 @@
           <p class="eyebrow">Keratoconus vision</p>
           <h1>Simulator</h1>
           <p class="lede">
-            Ghosts and blur like keratoconus. Not a diagnosis. The photo never
-            leaves this device.
+            Ghosts, blur, and streak like keratoconus. Not a diagnosis. The
+            photo never leaves this device.
           </p>
           <button type="button" class="btn about-open" id="about-open">
             What is keratoconus?
@@ -193,6 +193,9 @@
                 <button type="button" class="btn switch-opt" data-shape="scattershot" aria-pressed="false">
                   Scattershot
                 </button>
+                <button type="button" class="btn switch-opt" data-shape="ring" aria-pressed="false">
+                  Ring
+                </button>
               </div>
               <div class="sliders">
                 <div class="slider">
@@ -240,6 +243,44 @@
                     <output id="out-edge-blur" for="edge-blur">1.7</output>
                   </span>
                   <input id="edge-blur" type="range" min="0" max="12" step="0.1" value="1.7" />
+                </div>
+              </div>
+            </section>
+
+            <section class="block" aria-labelledby="streak-label">
+              <h2 id="streak-label">Streak</h2>
+              <div class="sliders">
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="streak-length">Streak length</label>
+                      <button type="button" class="help-btn" data-help="streakLength" aria-label="About Streak length">?</button>
+                    </span>
+                    <output id="out-streak-length" for="streak-length">0.0%</output>
+                  </span>
+                  <input id="streak-length" type="range" min="0" max="100" step="0.5" value="0" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="streak-amount">Streak amount</label>
+                      <button type="button" class="help-btn" data-help="streakAmount" aria-label="About Streak amount">?</button>
+                    </span>
+                    <output id="out-streak-amount" for="streak-amount">0.80</output>
+                  </span>
+                  <input id="streak-amount" type="range" min="0" max="1" step="0.01" value="0.80" />
+                </div>
+                <div class="slider">
+                  <span class="slider-meta">
+                    <span class="slider-name">
+                      <label for="streak-reflect">Opposite reflection</label>
+                      <button type="button" class="help-btn" data-help="streakReflect" aria-label="About Opposite reflection">?</button>
+                    </span>
+                  </span>
+                  <label class="check">
+                    <input type="checkbox" id="streak-reflect" />
+                    Fainter tail the other way
+                  </label>
                 </div>
               </div>
             </section>

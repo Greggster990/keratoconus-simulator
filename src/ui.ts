@@ -13,6 +13,9 @@ export type SliderEls = {
   scatter: HTMLInputElement
   overallBlur: HTMLInputElement
   edgeBlur: HTMLInputElement
+  streakLength: HTMLInputElement
+  streakAmount: HTMLInputElement
+  streakReflect: HTMLInputElement
 }
 
 export function readParams(els: SliderEls, current: GhostParams): GhostParams {
@@ -29,6 +32,9 @@ export function readParams(els: SliderEls, current: GhostParams): GhostParams {
     shapeMode: current.shapeMode,
     overallBlur: Number(els.overallBlur.value),
     edgeBlur: Number(els.edgeBlur.value),
+    streakLength: Number(els.streakLength.value),
+    streakAmount: Number(els.streakAmount.value),
+    streakReflect: els.streakReflect.checked,
   }
 }
 
@@ -44,6 +50,9 @@ export function writeParams(els: SliderEls, params: GhostParams): void {
   els.scatter.value = String(params.scatter)
   els.overallBlur.value = String(params.overallBlur)
   els.edgeBlur.value = String(params.edgeBlur)
+  els.streakLength.value = String(params.streakLength)
+  els.streakAmount.value = String(params.streakAmount)
+  els.streakReflect.checked = params.streakReflect
 }
 
 export function renderReadouts(params: GhostParams): void {
@@ -58,6 +67,8 @@ export function renderReadouts(params: GhostParams): void {
   setText('out-scatter', params.scatter.toFixed(2))
   setText('out-overall-blur', params.overallBlur.toFixed(1))
   setText('out-edge-blur', params.edgeBlur.toFixed(1))
+  setText('out-streak-length', `${params.streakLength.toFixed(1)}%`)
+  setText('out-streak-amount', params.streakAmount.toFixed(2))
 }
 
 export function syncPhaseSlider(input: HTMLInputElement, params: GhostParams): void {
@@ -78,6 +89,14 @@ export function syncPresetButtons(params: GhostParams): void {
 }
 
 export function syncShapeSwitch(mode: ShapeMode): void {
+  const countLabel = document.querySelector('label[for="count"]')
+  const countText = mode === 'ring' ? 'Ghost pairs' : 'Ghost copies'
+  if (countLabel) countLabel.textContent = countText
+  document.querySelector('[data-help="count"]')?.setAttribute('aria-label', `About ${countText}`)
+  for (const id of ['curve', 'scatter']) {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    if (input) input.disabled = mode === 'ring'
+  }
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-shape]')) {
     const shape = button.getAttribute('data-shape')
     button.setAttribute('aria-pressed', shape === mode ? 'true' : 'false')

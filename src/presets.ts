@@ -1,4 +1,4 @@
-export type ShapeMode = 'linear' | 'scattershot'
+export type ShapeMode = 'linear' | 'scattershot' | 'ring'
 
 export type GhostParams = {
   mix: number
@@ -13,6 +13,9 @@ export type GhostParams = {
   shapeMode: ShapeMode
   overallBlur: number
   edgeBlur: number
+  streakLength: number
+  streakAmount: number
+  streakReflect: boolean
 }
 
 export type PresetId = 'mild' | 'stacked' | 'everyday' | 'scattered' | 'smear' | 'severe'
@@ -41,6 +44,9 @@ export const MILD: GhostParams = {
   shapeMode: 'linear',
   overallBlur: 0.3,
   edgeBlur: 0.6,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 /** Classic discrete polyopia. */
@@ -57,6 +63,9 @@ export const STACKED: GhostParams = {
   shapeMode: 'linear',
   overallBlur: 0.6,
   edgeBlur: 1.5,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 /** Lived-in look from the author's settings. */
@@ -73,6 +82,9 @@ export const EVERYDAY: GhostParams = {
   shapeMode: 'linear',
   overallBlur: 1.8,
   edgeBlur: 1.7,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 export const SCATTERED: GhostParams = {
@@ -88,6 +100,9 @@ export const SCATTERED: GhostParams = {
   shapeMode: 'scattershot',
   overallBlur: 0.7,
   edgeBlur: 1.3,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 export const SMEAR: GhostParams = {
@@ -103,6 +118,9 @@ export const SMEAR: GhostParams = {
   shapeMode: 'linear',
   overallBlur: 1.1,
   edgeBlur: 0.9,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 export const SEVERE: GhostParams = {
@@ -118,6 +136,9 @@ export const SEVERE: GhostParams = {
   shapeMode: 'linear',
   overallBlur: 1.4,
   edgeBlur: 2.5,
+  streakLength: 0,
+  streakAmount: 0.8,
+  streakReflect: false,
 }
 
 export const PRESETS: { id: PresetId; label: string; params: GhostParams }[] = [
@@ -302,7 +323,10 @@ export function paramsEqual(a: GhostParams, b: GhostParams): boolean {
     near(a.scatter, b.scatter) &&
     a.shapeMode === b.shapeMode &&
     near(a.overallBlur, b.overallBlur) &&
-    near(a.edgeBlur, b.edgeBlur)
+    near(a.edgeBlur, b.edgeBlur) &&
+    near(a.streakLength, b.streakLength) &&
+    near(a.streakAmount, b.streakAmount) &&
+    a.streakReflect === b.streakReflect
   )
 }
 
@@ -329,9 +353,12 @@ export function paramsToQuery(params: GhostParams): string {
   q.set('k', params.contrast.toFixed(2))
   q.set('r', params.curve.toFixed(2))
   q.set('j', params.scatter.toFixed(2))
-  q.set('sh', params.shapeMode === 'scattershot' ? '1' : '0')
+  q.set('sh', params.shapeMode === 'ring' ? '2' : params.shapeMode === 'scattershot' ? '1' : '0')
   q.set('ob', params.overallBlur.toFixed(1))
   q.set('eb', params.edgeBlur.toFixed(1))
+  q.set('sk', params.streakLength.toFixed(1))
+  q.set('sa', params.streakAmount.toFixed(2))
+  q.set('sr', params.streakReflect ? '1' : '0')
   return q.toString()
 }
 
@@ -351,9 +378,12 @@ export function paramsFromQuery(search: string): GhostParams | null {
     contrast: q.has('k') ? clamp(Number(q.get('k')), 0, 1) : base.contrast,
     curve: q.has('r') ? clamp(Number(q.get('r')), -2, 2) : base.curve,
     scatter: q.has('j') ? clamp(Number(q.get('j')), 0, 2) : base.scatter,
-    shapeMode: q.get('sh') === '1' ? 'scattershot' : 'linear',
+    shapeMode: q.get('sh') === '2' ? 'ring' : q.get('sh') === '1' ? 'scattershot' : 'linear',
     overallBlur: q.has('ob') ? clamp(Number(q.get('ob')), 0, 12) : base.overallBlur,
     edgeBlur: q.has('eb') ? clamp(Number(q.get('eb')), 0, 12) : base.edgeBlur,
+    streakLength: q.has('sk') ? clamp(Number(q.get('sk')), 0, 100) : base.streakLength,
+    streakAmount: q.has('sa') ? clamp(Number(q.get('sa')), 0, 1) : base.streakAmount,
+    streakReflect: q.has('sr') ? q.get('sr') === '1' : base.streakReflect,
   }
 }
 

@@ -11,17 +11,17 @@ export const HELP: Record<string, HelpTopic> = {
     cites: [2, 6],
   },
   count: {
-    how: 'How many extra copies appear. One is a single shadow; several is stacked or sprayed polyopia.',
+    how: 'How many extra copies appear. One is a single shadow; several is stacked or sprayed polyopia. In Ring mode, this sets the number of matching pairs along the two sides, plus one shared faint ghost at the far end.',
     fact: 'An irregular cornea can prevent light from meeting at one retinal point, so one object is imaged as overlapping copies.',
     cites: [2, 6, 7],
   },
   sep: {
-    how: 'How far each copy sits from the real image. Small values hug the original; large values throw the ghosts farther out.',
+    how: 'How far each copy sits from the real image. Small values hug the original; large values throw the ghosts farther out. In Ring mode, the ring radius is twice the displayed separation; the original sits on the ring, not at its center.',
     fact: 'Thinning and steepening are often inferotemporal, so rays through that zone focus off-axis and the ghost is displaced.',
     cites: [2, 6],
   },
   angle: {
-    how: 'Which way the stack or spray is biased. Drag it until the ghosts sit where yours do.',
+    how: 'Which way the stack or spray is biased, or which way the far end of the ring points. Drag it until the ghosts sit where yours do.',
     fact: 'The cone commonly peaks below or down-and-out from center. Ghost direction often follows that apex, but not always.',
     cites: [2],
   },
@@ -41,17 +41,17 @@ export const HELP: Record<string, HelpTopic> = {
     cites: [6, 7],
   },
   shape: {
-    how: 'Linear parks copies on a path. Scattershot sprays them in a cloud. Use Linear for a neat stack; Scattershot if your ghosts do not line up.',
+    how: 'Linear parks copies on a path. Scattershot sprays them in a cloud. Ring follows both sides of a circle from the main object to a very faint copy at the opposite end, with brighter areas producing stronger ghosts.',
     fact: 'Vertical coma from an off-center cone often looks like a comet. Extra local irregularity can throw light in more than one direction.',
     cites: [6, 7],
   },
   curve: {
-    how: 'Bends a Linear stack left or right. Zero is a straight line. Does little in Scattershot mode.',
+    how: 'Bends a Linear stack left or right. Zero is a straight line. Does little in Scattershot mode. Disabled for Ring, which stays circular.',
     fact: 'The cornea is not a tidy geometric cone. Changing curvature across the pupil can arc the path of the ghosts.',
     cites: [2, 6],
   },
   scatter: {
-    how: 'Adds wobble. On Linear it nicks the line; on Scattershot it widens the spray.',
+    how: 'Adds wobble. On Linear it nicks the line; on Scattershot it widens the spray. Disabled for Ring to keep both sides symmetric.',
     fact: 'Local irregularity rides on top of the main cone, so copies rarely land on even, ruler-straight steps.',
     cites: [2, 6],
   },
@@ -63,6 +63,21 @@ export const HELP: Record<string, HelpTopic> = {
   edge: {
     how: 'Adds extra smear only on high-contrast edges — letter rims, a moon’s limb, a window frame.',
     fact: 'Coma shows up first at edges, which is why a letter rim or a moon’s limb can look tailed while a wall still looks fairly even.',
+    cites: [6, 7],
+  },
+  streakLength: {
+    how: 'How far the comet tail stretches. Zero is off. It follows the same Direction as the ghosts. Night lights can need a long throw.',
+    fact: 'Coma, the main higher-order aberration in keratoconus, stretches a point of light into a comet rather than a second sharp copy.',
+    cites: [6, 7],
+  },
+  streakAmount: {
+    how: 'How strongly those tails paint over the photo. Length can be long and this still faint, or short and heavy.',
+    fact: 'Night lights and bright lettering show the tail first because the spread of light is easiest to see against a dark field.',
+    cites: [6, 7],
+  },
+  streakReflect: {
+    how: 'Adds a weaker tail the opposite way, about half as strong as the main streak. Leave it off if your tails only go one direction.',
+    fact: 'A coma-like point spread is usually one-sided, but extra irregularity can throw a dimmer spike back the other way, like a faint reflection.',
     cites: [6, 7],
   },
 }
