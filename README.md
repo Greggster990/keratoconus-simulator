@@ -30,6 +30,8 @@ Then open the local URL Vite prints.
 
 3. **Streaks** — adjustable length, strength, and an optional weaker opposite tail.
 
+The eight presets include **Ring**, tuned for the small Moon, and **Night streaks**, tuned for lights in the street and city photos. The basic **Ghosting intensity** slider uses a numeric 0–100 scale, separate from preset names.
+
 ## Sample photos
 
 Use **Try a sample photo** in either control mode to load the Moon, city lights, traffic lights, a street sign, a clock face, or a chessboard. Samples preserve the current sliders. Credits appear at the bottom when selected and are included in downloaded sample images. Uploading a personal photo clears the sample credit.

@@ -20,7 +20,7 @@ export const SAMPLES: SamplePhoto[] = [
   { id: 'city', label: 'City lights', hint: 'Night lights and windows', title: 'City at Night (32760281221)', author: "It’s No Game", source: commons + 'City_at_Night_(32760281221).jpg', ...ccby },
   { id: 'traffic', label: 'Traffic lights', hint: 'Nighttime crosswalk', title: 'Traffic at a Chicago intersection at night', author: 'Topher', source: 'https://wordpress.org/photos/photo/15768f23bc/', ...cc0 },
   { id: 'sign', label: 'Street sign', hint: 'White lettering', title: 'Luverne, MN Main Street sign', author: 'Michel Curi', source: commons + 'Luverne,_MN_Main_Street_sign.jpg', ...ccby },
-  { id: 'clock', label: 'Clock face', hint: 'Complete face and hands', title: 'Traditional round wall clock', author: 'davlopez', source: 'https://wordpress.org/photos/photo/5476a83db2/', ...cc0 },
+  { id: 'clock', label: 'Clock face', hint: 'Glowing face, dark hands', title: 'Illuminated clock', author: 'Angelo DeSantis', source: commons + 'Illuminated_clock_(8275496004).jpg', ...ccby },
   { id: 'chess', label: 'Chessboard', hint: 'Contrasting pieces', title: 'Image Chess', author: 'Devcore', source: commons + 'Image_Chess.jpg', ...cc0 },
 ]
 

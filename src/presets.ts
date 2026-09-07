@@ -18,7 +18,7 @@ export type GhostParams = {
   streakReflect: boolean
 }
 
-export type PresetId = 'mild' | 'stacked' | 'everyday' | 'scattered' | 'smear' | 'severe'
+export type PresetId = 'mild' | 'stacked' | 'everyday' | 'scattered' | 'smear' | 'severe' | 'ring' | 'night-streaks'
 
 const GHOST_KEYS = [
   'mix',
@@ -141,6 +141,41 @@ export const SEVERE: GhostParams = {
   streakReflect: false,
 }
 
+/** Paired ghosts around a clear oval, especially visible on the small Moon. */
+export const RING: GhostParams = {
+  ...EVERYDAY,
+  mix: 1,
+  ghostCount: 7,
+  separation: 4.5,
+  angle: 270,
+  fade: 0.78,
+  softness: 0.6,
+  contrast: 0.5,
+  curve: 0,
+  scatter: 1,
+  shapeMode: 'ring',
+  overallBlur: 0,
+  edgeBlur: 0,
+}
+
+/** Long light tails for the nighttime intersection and city samples. */
+export const NIGHT_STREAKS: GhostParams = {
+  ...MILD,
+  mix: 0.35,
+  ghostCount: 2,
+  separation: 1,
+  angle: 250,
+  fade: 0.5,
+  softness: 0.8,
+  curve: 0,
+  scatter: 0.1,
+  overallBlur: 0.2,
+  edgeBlur: 0.3,
+  streakLength: 18,
+  streakAmount: 0.9,
+  streakReflect: true,
+}
+
 export const PRESETS: { id: PresetId; label: string; params: GhostParams }[] = [
   { id: 'mild', label: 'Mild', params: MILD },
   { id: 'stacked', label: 'Stacked', params: STACKED },
@@ -148,18 +183,18 @@ export const PRESETS: { id: PresetId; label: string; params: GhostParams }[] = [
   { id: 'scattered', label: 'Scattered', params: SCATTERED },
   { id: 'smear', label: 'Soft smear', params: SMEAR },
   { id: 'severe', label: 'Severe', params: SEVERE },
+  { id: 'ring', label: 'Ring', params: RING },
+  { id: 'night-streaks', label: 'Night streaks', params: NIGHT_STREAKS },
 ]
 
 type GhostPhase = {
   t: number
-  label: string
   ghost: Pick<GhostParams, (typeof GHOST_KEYS)[number]>
 }
 
 const PHASES: GhostPhase[] = [
   {
     t: 0,
-    label: 'Trace',
     ghost: {
       mix: 0.2,
       ghostCount: 1,
@@ -173,7 +208,6 @@ const PHASES: GhostPhase[] = [
   },
   {
     t: 0.22,
-    label: 'Mild',
     ghost: {
       mix: 0.5,
       ghostCount: 1,
@@ -187,7 +221,6 @@ const PHASES: GhostPhase[] = [
   },
   {
     t: 0.42,
-    label: 'Moderate',
     ghost: {
       mix: 0.82,
       ghostCount: 3,
@@ -201,7 +234,6 @@ const PHASES: GhostPhase[] = [
   },
   {
     t: 0.62,
-    label: 'Marked',
     ghost: {
       mix: 0.95,
       ghostCount: 5,
@@ -215,7 +247,6 @@ const PHASES: GhostPhase[] = [
   },
   {
     t: 0.82,
-    label: 'Advanced',
     ghost: {
       mix: 0.98,
       ghostCount: 7,
@@ -229,7 +260,6 @@ const PHASES: GhostPhase[] = [
   },
   {
     t: 1,
-    label: 'Severe',
     ghost: {
       mix: 0.99,
       ghostCount: 9,
@@ -274,14 +304,7 @@ export function applyGhostPhase(phase: number, current: GhostParams): GhostParam
 }
 
 export function ghostPhaseLabel(phase: number): string {
-  const t = clamp(phase, 0, 1)
-  let best = PHASES[0]
-  for (const step of PHASES) {
-    if (Math.abs(step.t - t) < Math.abs(best.t - t)) {
-      best = step
-    }
-  }
-  return best.label
+  return `${Math.round(clamp(phase, 0, 1) * 100)} / 100`
 }
 
 export function nearestGhostPhase(params: GhostParams): number {

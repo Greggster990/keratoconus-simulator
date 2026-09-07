@@ -9,7 +9,9 @@
     "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-USGov-NASA",
     "checkedOn": "2026-09-07",
     "changes": "Source JPEG resized and compressed; displayed at no more than 10% of the shorter frame dimension, centered on a black background; optional simulator effects.",
-    "sha256": "c1f9bb384826c2a8c0567889ce5b728bb3c4b8b14ad5cc3e4e76292de334a341"
+    "sha256": "c1f9bb384826c2a8c0567889ce5b728bb3c4b8b14ad5cc3e4e76292de334a341",
+    "thumbnailChanges": "Matches the display framing: Moon source scaled into a 20 × 20 pixel box on a 320 × 200 black background.",
+    "thumbnailSha256": "4a2fdb8f3108d9e64bee2935bee855096713e30143593c697dcd25a0d3d11dc5"
   },
   {
     "id": "city",
@@ -49,15 +51,15 @@
   },
   {
     "id": "clock",
-    "title": "Traditional round wall clock",
-    "source": "https://wordpress.org/photos/photo/5476a83db2/",
-    "download": "https://pd.w.org/2026/08/5476a83db2c8f6d23.24029069-rotated.jpeg",
-    "author": "davlopez",
-    "license": "CC0 1.0",
-    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "title": "Illuminated clock",
+    "source": "https://commons.wikimedia.org/wiki/File:Illuminated_clock_(8275496004).jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Illuminated_clock_%288275496004%29.jpg",
+    "author": "Angelo DeSantis",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
     "checkedOn": "2026-09-07",
     "changes": "Resized and JPEG-compressed; optional simulator effects.",
-    "sha256": "5135c537a9d161a2ea29575e4c625619987c7ab1bfffc169a38115fce1a19a9f"
+    "sha256": "df1f0db83095803db557917400ba38a2b8aca6bf6e1f0d7d64c9e88018fe4519"
   },
   {
     "id": "chess",
